@@ -1,32 +1,12 @@
-﻿/*
- * =====================================================
- *   МОРСЬКИЙ БІЙ — проста консольна гра на C++
- *   Для початківців: код з детальними коментарями
- * =====================================================
- *
- *  Правила:
- *  - Поле 10x10
- *  - Гравець розміщує кораблі вручну
- *  - Комп'ютер розміщує кораблі випадково
- *  - По черзі стріляють, поки хтось не потопить усі кораблі
- *
- *  Кораблі:
- *  - 1 корабель розміром 4 клітинки
- *  - 2 кораблі розміром 3 клітинки
- *  - 3 кораблі розміром 2 клітинки
- *  - 4 кораблі розміром 1 клітинку
- */
+﻿
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <string>
 #include <windows.h>
-
 using namespace std;
 
-// =====================
-//    КОЛЬОРИ
-// =====================
+// КОЛЬОРИ
 void setColor(int textColor, int backgroundColor)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -38,15 +18,14 @@ void resetColor()
     setColor(7, 0);
 }
 
-// =====================
-//    ТАЙМЕР
-// =====================
+
+//ТАЙМЕР
+
 time_t gameStartTime;
 
 string getElapsedTime()
 {
     time_t now = time(0);
-    // Використовуємо difftime для уникнення попереджень про типи даних
     double elapsed = difftime(now, gameStartTime);
     int minutes = (int)elapsed / 60;
     int seconds = (int)elapsed % 60;
@@ -59,21 +38,14 @@ string getElapsedTime()
     return result;
 }
 
-// =====================
-//    КОНСТАНТИ
-//    Змінено SIZE -> BOARD_SIZE для уникнення конфлікту з Windows API
-// =====================
+// КОНСТАНТИ
 const int BOARD_SIZE = 10;
-
 const char EMPTY = '.';
 const char SHIP = 'S';
 const char HIT = 'X';
 const char MISS = 'O';
 
-// =====================
-//    ФУНКЦІЇ
-// =====================
-
+// ФУНКЦІЇ
 void printBoard(char board[BOARD_SIZE][BOARD_SIZE], bool hideShips)
 {
     cout << "  ";
@@ -81,7 +53,6 @@ void printBoard(char board[BOARD_SIZE][BOARD_SIZE], bool hideShips)
         cout << col << " ";
     }
     cout << endl;
-
     for (int row = 0; row < BOARD_SIZE; row++) {
         cout << row << " ";
         for (int col = 0; col < BOARD_SIZE; col++) {
@@ -243,10 +214,7 @@ void computerShoot(char board[BOARD_SIZE][BOARD_SIZE])
         }
     }
 }
-
-// =====================
-//    MAIN
-// =====================
+// MAIN
 int main()
 {
     srand((unsigned int)time(0));
@@ -257,7 +225,7 @@ int main()
     initBoard(computerBoard);
 
     setColor(14, 0);
-    cout << "=== BATTLESHIP ===\n\n";
+    cout << "----- BATTLESHIP -----\n\n";
     resetColor();
 
     cout << "Choose ship placement:\n";
@@ -275,15 +243,12 @@ int main()
         cout << "Ships placed randomly.\n";
         resetColor();
     }
-
     placeShipsRandom(computerBoard);
-
     gameStartTime = time(0);
 
     setColor(14, 0);
     cout << "\nThe game has begun! Good luck!\n";
     resetColor();
-
     while (true) {
         setColor(14, 0);
         cout << "\n===== YOUR TURN =====\n";
@@ -318,7 +283,6 @@ int main()
                 break;
             }
         }
-
         if (shoot(computerBoard, row, col)) {
             setColor(12, 0);
             cout << "HIT!\n";
@@ -339,7 +303,7 @@ int main()
         }
 
         setColor(14, 0);
-        cout << "\n===== COMPUTER'S TURN =====\n";
+        cout << "\n---- COMPUTER'S TURN -----\n";
         resetColor();
         computerShoot(playerBoard);
 
