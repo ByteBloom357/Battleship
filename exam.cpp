@@ -6,6 +6,13 @@
 #include <windows.h>
 using namespace std;
 
+// Константи кольорів
+const int WHITE = 7;
+const int GREEN = 10;
+const int RED = 12;
+const int YELLOW = 14;
+const int BLACK = 0;
+
 // КОЛЬОРИ
 void setColor(int textColor, int backgroundColor)
 {
@@ -13,9 +20,8 @@ void setColor(int textColor, int backgroundColor)
     SetConsoleTextAttribute(hConsole, textColor + backgroundColor * 16);
 }
 
-void resetColor()
-{
-    setColor(7, 0);
+void resetColor() {
+    setColor(WHITE, BLACK);
 }
 
 
@@ -65,13 +71,13 @@ void printBoard(char board[BOARD_SIZE][BOARD_SIZE], bool hideShips)
                 cout << " ";
             }
             else if (cell == HIT) {
-                setColor(12, 0);
+                setColor(RED, BLACK); 
                 cout << HIT;
                 resetColor();
                 cout << " ";
             }
             else if (cell == SHIP) {
-                setColor(10, 0);
+                setColor(GREEN, BLACK);
                 cout << SHIP;
                 resetColor();
                 cout << " ";
@@ -150,7 +156,7 @@ void placeShipsManual(char board[BOARD_SIZE][BOARD_SIZE])
             cout << "\nYour field:\n";
             printBoard(board, false);
 
-            setColor(14, 0);
+            setColor(YELLOW, BLACK);
             cout << "\nPlace " << directions[i] << " ship (length " << length << ").\n";
             resetColor();
 
@@ -167,7 +173,7 @@ void placeShipsManual(char board[BOARD_SIZE][BOARD_SIZE])
             }
             else {
                 
-                (12, 0);
+                setColor(RED, BLACK);
                 cout << "Can't place here! Try again.\n";
                 resetColor();
             }
@@ -203,7 +209,7 @@ void computerShoot(char board[BOARD_SIZE][BOARD_SIZE])
         if (board[row][col] != HIT && board[row][col] != MISS) {
             cout << "Computer shoots: " << row << " " << col << "\n";
             if (shoot(board, row, col)) {
-                setColor(12, 0);
+                setColor(RED, BLACK);
                 cout << "Computer hit!\n";
                 resetColor();
             }
@@ -224,7 +230,7 @@ int main()
     initBoard(playerBoard);
     initBoard(computerBoard);
 
-    setColor(14, 0);
+    setColor(YELLOW, BLACK);
     cout << "----- BATTLESHIP -----\n\n";
     resetColor();
 
@@ -239,23 +245,23 @@ int main()
     }
     else {
         placeShipsRandom(playerBoard);
-        setColor(10, 0);
+        setColor(GREEN, BLACK);
         cout << "Ships placed randomly.\n";
         resetColor();
     }
     placeShipsRandom(computerBoard);
     gameStartTime = time(0);
 
-    setColor(14, 0);
+    setColor(YELLOW, BLACK);
     cout << "\nThe game has begun! Good luck!\n";
     resetColor();
     while (true) {
-        setColor(14, 0);
+        setColor(YELLOW, BLACK);
         cout << "\n===== YOUR TURN =====\n";
         resetColor();
 
         cout << "Time: ";
-        setColor(14, 0);
+        setColor(YELLOW, BLACK);
         cout << getElapsedTime();
         resetColor();
         cout << "\n";
@@ -270,12 +276,12 @@ int main()
             cout << "\nEnter row for the shot (0-9): ";    cin >> row;
             cout << "Enter column for the shot (0-9): ";  cin >> col;
             if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
-                setColor(12, 0);
+                setColor(RED, BLACK);
                 cout << "Out of range! Try again.\n";
                 resetColor();
             }
             else if (computerBoard[row][col] == HIT || computerBoard[row][col] == MISS) {
-                setColor(12, 0);
+                setColor(RED, BLACK);
                 cout << "Already shot here! Choose another cell.\n";
                 resetColor();
             }
@@ -284,7 +290,7 @@ int main()
             }
         }
         if (shoot(computerBoard, row, col)) {
-            setColor(12, 0);
+            setColor(RED, BLACK);
             cout << "HIT!\n";
             resetColor();
         }
@@ -295,14 +301,14 @@ int main()
         if (allShipsSunk(computerBoard)) {
             cout << "\nEnemy field:\n";
             printBoard(computerBoard, false);
-            setColor(10, 0);
+            setColor(GREEN, BLACK);
             cout << "\nCONGRATULATIONS! YOU WIN!\n";
             resetColor();
             cout << "Your time: " << getElapsedTime() << "\n";
             break;
         }
 
-        setColor(14, 0);
+        setColor(YELLOW, BLACK);
         cout << "\n---- COMPUTER'S TURN -----\n";
         resetColor();
         computerShoot(playerBoard);
@@ -310,7 +316,7 @@ int main()
         if (allShipsSunk(playerBoard)) {
             cout << "\nYour field:\n";
             printBoard(playerBoard, false);
-            setColor(12, 0);
+            setColor(RED, BLACK);
             cout << "\nComputer won! All your ships are sunk.\n";
             resetColor();
             cout << "Game lasted: " << getElapsedTime() << "\n";
